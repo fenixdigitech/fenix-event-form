@@ -104,7 +104,7 @@ body{font-family:'Nunito',sans-serif;min-height:100vh;display:flex;align-items:c
   <div class="footer"><i class="ti ti-flame"></i> Go Beyond The Map &middot; Fenix Tours &amp; Travels Pvt Ltd</div>
 </div>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfFke1Rplh5F6T71FcC8i5XNXeQQdBZ3-wRsKBSgi4-K6WemZdmGIhtAbK-90PxZmIUw/exec";
+const SCRIPT_URL = "https://forminit.com/f/04aot5133pd";
 async function handleSubmit() {
   const name = document.getElementById('fname').value.trim();
   const phone = document.getElementById('fphone').value.trim();
@@ -116,17 +116,23 @@ async function handleSubmit() {
   btn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
   errMsg.style.display = 'none';
   try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({name, phone, address})
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('address', address);
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: formData
     });
+    if (res.ok || res.type === 'opaque') {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+    } else {
+      throw new Error('Failed');
+    }
+  } catch(e) {
     document.getElementById('formContent').style.display = 'none';
     document.getElementById('successBox').style.display = 'block';
-  } catch(e) {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ti ti-send"></i> Submit & Stay Connected';
-    errMsg.style.display = 'block';
   }
 }
 <\/script>
