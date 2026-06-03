@@ -69,7 +69,7 @@ body{font-family:'Nunito',sans-serif;min-height:100vh;display:flex;align-items:c
     </div>
   </div>
   <div class="form-section">
-    <div id="formContent">
+    <div id="formContent"><form id="leadForm" action="https://forminit.com/f/04aot5133pd" method="POST" style="margin:0;">
       <div class="form-heading">
         <div class="form-heading-icon"><i class="ti ti-address-book"></i></div>
         <div class="form-title">Stay in the Loop!</div>
@@ -78,22 +78,21 @@ body{font-family:'Nunito',sans-serif;min-height:100vh;display:flex;align-items:c
       <div class="divider"></div>
       <div class="field">
         <label><i class="ti ti-user"></i> Full Name</label>
-        <input type="text" id="fname" placeholder="Your full name" autocomplete="name"/>
+        <input type="text" id="fname" name="name" placeholder="Your full name" autocomplete="name"/>
       </div>
       <div class="field">
         <label><i class="ti ti-phone"></i> Phone Number</label>
-        <input type="tel" id="fphone" placeholder="+91 98765 43210" autocomplete="tel"/>
+        <input type="tel" id="fphone" name="phone" placeholder="+91 98765 43210" autocomplete="tel"/>
       </div>
       <div class="field">
         <label><i class="ti ti-map-pin"></i> Address / City</label>
-        <input type="text" id="faddress" placeholder="City or area you live in"/>
+        <input type="text" id="faddress" name="address" placeholder="City or area you live in"/>
       </div>
-      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit(event)">
         <i class="ti ti-send"></i> Submit &amp; Stay Connected
       </button>
-      <div class="error-msg" id="errMsg">Something went wrong. Please try again.</div>
       <div class="consent">By submitting, you agree to receive calls &amp; WhatsApp messages from Fenix Tours &amp; Travels. Your data stays private.</div>
-    </div>
+    </form></div>
     <div class="success-box" id="successBox">
       <div class="success-icon"><i class="ti ti-circle-check"></i></div>
       <div class="success-title">You're all set! &#127881;</div>
@@ -104,36 +103,15 @@ body{font-family:'Nunito',sans-serif;min-height:100vh;display:flex;align-items:c
   <div class="footer"><i class="ti ti-flame"></i> Go Beyond The Map &middot; Fenix Tours &amp; Travels Pvt Ltd</div>
 </div>
 <script>
-const SCRIPT_URL = "https://forminit.com/f/04aot5133pd";
-async function handleSubmit() {
+function handleSubmit(e) {
+  e.preventDefault();
   const name = document.getElementById('fname').value.trim();
   const phone = document.getElementById('fphone').value.trim();
-  const address = document.getElementById('faddress').value.trim();
   if (!name || !phone) { alert('Please enter your name and phone number to continue.'); return; }
   const btn = document.getElementById('submitBtn');
-  const errMsg = document.getElementById('errMsg');
   btn.disabled = true;
   btn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
-  errMsg.style.display = 'none';
-  try {
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('phone', phone);
-    formData.append('address', address);
-    const res = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: formData
-    });
-    if (res.ok || res.type === 'opaque') {
-      document.getElementById('formContent').style.display = 'none';
-      document.getElementById('successBox').style.display = 'block';
-    } else {
-      throw new Error('Failed');
-    }
-  } catch(e) {
-    document.getElementById('formContent').style.display = 'none';
-    document.getElementById('successBox').style.display = 'block';
-  }
+  document.getElementById('leadForm').submit();
 }
 <\/script>
 </body>
